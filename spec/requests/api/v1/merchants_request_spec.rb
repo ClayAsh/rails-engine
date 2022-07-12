@@ -27,8 +27,13 @@ RSpec.describe "Merchants API" do
     get '/api/v1/merchants'
 
     merchant = JSON.parse(response.body, symbolize_names: true)
-
     expect(response).to be_successful
-
+    expect(merchant).to be_a(Hash)
+    merchant[:data].each do |merch|
+    expect(merch).to include(:id)
+    expect(merch[:attributes]).to include(:name)
+    expect(merch[:attributes][:name]).to be_a(String)
+    expect(merch[:id]).to be_a(String)
+    end 
   end
 end
