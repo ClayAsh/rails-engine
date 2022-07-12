@@ -12,7 +12,9 @@ RSpec.describe "Merchant Item api" do
     expect(response).to be_successful
     
     items.each do |item|
+
       expect(item).to include(:id)
+      expect(item[:type]).to eq("item")
       expect(item[:attributes]).to include(:name, :description, :unit_price)
       expect(item[:attributes][:name]).to be_a(String)
       expect(item[:attributes][:description]).to be_a(String)
