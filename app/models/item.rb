@@ -9,4 +9,8 @@ class Item < ApplicationRecord
   has_many :transactions, through: :invoices
   belongs_to :merchant
   has_many :customers, through: :invoices
+
+  def self.name_search(search) 
+    where('lower(name) like ?', "%#{search.downcase}%")
+  end
 end
