@@ -6,6 +6,10 @@ Rails.application.routes.draw do
       resources :merchants, only: %i[index show] do 
        resources :items, only: %i[index], controller: 'merchant_items'
       end 
+
+      resources :items do 
+        # get "/api/v1/items/:item_id/merchant", to: 'item_merchants#show'
+      end
     end
   end
 end
