@@ -86,12 +86,4 @@ RSpec.describe "Item api" do
     expect(Item.count).to eq(0)
     expect{Item.find(item.id)}.to raise_error(ActiveRecord::RecordNotFound)
   end
-
-  xit 'can get merchant data for an item' do 
-    merchant = create(:merchant)
-    item = create(:item, merchant_id: merchant.id)
-
-    get "/api/v1/items/#{item.id}/merchant"
-
-  end
 end
