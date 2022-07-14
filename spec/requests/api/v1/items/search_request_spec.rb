@@ -141,7 +141,7 @@ RSpec.describe 'Item search api' do
   end
 
   it 'can send empty price params in min and max search for item and get error message' do 
-     get "/api/v1/items/find_all?max_price=&min_price="
+    get "/api/v1/items/find_all?max_price=&min_price="
 
     items_json = JSON.parse(response.body, symbolize_names: true)
     items = items_json[:data]

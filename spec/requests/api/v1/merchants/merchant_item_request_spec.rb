@@ -24,8 +24,4 @@ RSpec.describe "Merchant Item api" do
       expect(items[0][:attributes][:name]).to eq(Item.first.name)
     end
   end
-
-  xit 'sad path get all items for merchant' do 
-
-  end
 end 

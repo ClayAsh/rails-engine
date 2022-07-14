@@ -74,6 +74,22 @@ RSpec.describe "Item api" do
     expect(item.unit_price).to_not eq(changed_item.unit_price)
   end
 
+  it 'can fail to update an item' do 
+    merchant = create(:merchant)
+    item = create(:item, merchant_id: merchant.id)
+    updated_item_params = { name: "The Thing", description: "It does the stuff", unit_price: 5.99 , merchant_id: 5 }
+    headers = {'CONTENT_TYPE' => 'application/json'}
+
+    patch "/api/v1/items/#{item.id}", headers: headers, params: JSON.generate(item: updated_item_params)
+
+    changed_item = Item.last 
+
+    expect(response.status).to eq(404)
+    expect(item.name).to eq(item.name)
+    expect(item.description).to eq(item.description)
+    expect(item.unit_price).to eq(item.unit_price)
+  end
+
   it 'can delete an item' do 
     merchant = create(:merchant)
     item = create(:item, merchant_id: merchant.id)
