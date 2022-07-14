@@ -43,7 +43,7 @@ RSpec.describe 'Item search api' do
     expect(items_json[:data]).to eq([])
   end
 
-  it 'can send empty name params for item and get error message' do 
+  it 'can send empty name params for name and get error message' do 
      get "/api/v1/items/find_all?name="
 
     items_json = JSON.parse(response.body, symbolize_names: true)
@@ -53,8 +53,18 @@ RSpec.describe 'Item search api' do
     expect(items[:error]).to eq("Search Cannot be Empty")
   end
 
-  it 'can send empty price params for item and get error message' do 
+  it 'can send empty price params for min price and get error message' do 
      get "/api/v1/items/find_all?min_price="
+
+    items_json = JSON.parse(response.body, symbolize_names: true)
+    items = items_json[:data]
+
+    expect(response.status).to eq(400)
+    expect(items[:error]).to eq("Search Cannot be Empty")
+  end
+
+  it 'can send empty price params for max price and get error message' do 
+     get "/api/v1/items/find_all?max_price="
 
     items_json = JSON.parse(response.body, symbolize_names: true)
     items = items_json[:data]
@@ -99,6 +109,45 @@ RSpec.describe 'Item search api' do
     expect(item[:attributes][:unit_price]).to be_a(Float)
     expect(item[:attributes][:merchant_id]).to eq(merch_1.id)
     end
+  end
+
+  it 'can search items by min and max price' do 
+    get "/api/v1/items/find_all?max_price=10&min_price=17"
+
+    items_json = JSON.parse(response.body, symbolize_names: true)
+    items = items_json[:data]
+
+    expect(response).to be_successful
+    expect(items_json).to be_a(Hash)
+
+    items.each do |item|
+    expect(item).to include(:id)
+    expect(item[:attributes]).to include(:name, :description, :unit_price, :merchant_id)
+    expect(item[:attributes][:name]).to be_a(String)
+    expect(item[:attributes][:description]).to be_a(String)
+    expect(item[:attributes][:unit_price]).to be_a(Float)
+    expect(item[:attributes][:merchant_id]).to eq(merch_1.id)
+    end
+  end
+
+  it 'can send empty min price params in min and max search for item and get error message' do 
+     get "/api/v1/items/find_all?max_price=10&min_price="
+
+    items_json = JSON.parse(response.body, symbolize_names: true)
+    items = items_json[:data]
+
+    expect(response.status).to eq(400)
+    expect(items[:error]).to eq("Search Cannot be Empty")
+  end
+
+  it 'can send empty price params in min and max search for item and get error message' do 
+     get "/api/v1/items/find_all?max_price=&min_price="
+
+    items_json = JSON.parse(response.body, symbolize_names: true)
+    items = items_json[:data]
+
+    expect(response.status).to eq(400)
+    expect(items[:error]).to eq("Search Cannot be Empty")
   end
 
   it 'can send in price and name params and get an error' do 
