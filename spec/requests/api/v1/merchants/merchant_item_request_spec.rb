@@ -9,10 +9,11 @@ RSpec.describe "Merchant Item api" do
 
     merchant_items = JSON.parse(response.body, symbolize_names: true)
     items = merchant_items[:data]
-    expect(response).to be_successful
-    
-    items.each do |item|
 
+    expect(response).to be_successful
+    expect(items.count).to eq(5)
+
+    items.each do |item|
       expect(item).to include(:id)
       expect(item[:type]).to eq("item")
       expect(item[:attributes]).to include(:name, :description, :unit_price)
@@ -22,5 +23,9 @@ RSpec.describe "Merchant Item api" do
       expect(item[:attributes][:merchant_id]).to eq(merchant.id)
       expect(items[0][:attributes][:name]).to eq(Item.first.name)
     end
+  end
+
+  xit 'sad path get all items for merchant' do 
+
   end
 end 

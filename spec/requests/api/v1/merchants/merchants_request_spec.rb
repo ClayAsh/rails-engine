@@ -32,14 +32,15 @@ RSpec.describe "Merchants API" do
     expect(merchant).to be_a(Hash)
 
     merch = merchant[:data]
-    expect( merch).to include(:id)
-    expect( merch[:attributes]).to include(:name)
-    expect( merch[:attributes][:name]).to be_a(String)
-    expect( merch[:id]).to be_a(String)
+    expect(merch).to include(:id)
+    expect(merch[:attributes]).to include(:name)
+    expect(merch[:attributes][:name]).to be_a(String)
+    expect(merch[:id]).to be_a(String)
   end
 
-  xit 'can sad path' do 
-    id = 0
+  xit 'can sad path get one merchant' do 
+    id = "banana"  
+
     get "/api/v1/merchants/#{id}"
     merchant = JSON.parse(response.body, symbolize_names: true)
     expect(response.status).to be(404)
