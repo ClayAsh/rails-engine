@@ -13,4 +13,14 @@ class Item < ApplicationRecord
   def self.name_search(search) 
     where('lower(name) like ?', "%#{search.downcase}%")
   end
+
+  def self.min_price_search(search)
+    where('unit_price >= ?', search)
+  end
+
+  def self.max_price_search(search)
+    where('unit_price <= ?', search)
+  end
+
+  
 end
