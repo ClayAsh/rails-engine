@@ -23,7 +23,13 @@ class Api::V1::ItemSearchController < ApplicationController
 
     elsif params[:max_price] == "" 
       render json: {data: {error: "Search Cannot be Empty"}}, status: 400
-      #need to handle if both min & max are sent in 
+
+    elsif params[:max_price].present? && params[:min_price].present? && (params[:max_price] != "" && params[:min_price] != "")
+      item = Item.min_and_max_search(params[:min_price].to_f, params[:max_price].to_f)
+      render json: ItemSerializer.new(item)
+
+    elsif params[:max_price] == "" || params[:min_price] == ""
+      render json: {data: {error: "Search Cannot be Empty"}}, status: 400
     end
   end
 end

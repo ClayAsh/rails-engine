@@ -28,4 +28,8 @@ RSpec.describe Item, type: :model do
   it 'can search for item by maximum price' do 
     expect(Item.max_price_search(10.0)).to eq([item_3])
   end
+
+  it 'can search for item by min and max price' do 
+    expect(Item.min_and_max_search(10, 17)).to eq([item_2])
+  end
 end
