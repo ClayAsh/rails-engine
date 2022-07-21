@@ -25,6 +25,7 @@ class Api::V1::ItemSearchController < ApplicationController
       render json: {data: {error: "Search Cannot be Empty"}}, status: 400
 
     elsif params[:max_price].present? && params[:min_price].present? && (params[:max_price] != "" && params[:min_price] != "")
+      require 'pry'; binding.pry
       item = Item.min_and_max_search(params[:min_price].to_f, params[:max_price].to_f)
       render json: ItemSerializer.new(item)
 
